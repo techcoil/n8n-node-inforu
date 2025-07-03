@@ -5,7 +5,7 @@ import type {
     INodeType,
     INodeTypeDescription,
 } from 'n8n-workflow';
-import { NodeConnectionType } from 'n8n-workflow';
+import { NodeApiError, NodeConnectionType } from 'n8n-workflow';
 
 export class InforUNode implements INodeType {
     description: INodeTypeDescription = {
@@ -68,7 +68,7 @@ export class InforUNode implements INodeType {
         const username = credentials?.['username'];
         const token = credentials?.['token'];
         if (!username || !token || !content || !recipients) {
-            throw new Error('Missing data');
+            throw new NodeApiError(this.getNode(), { error: 'Missing data' });
         }
         const host = `https://api.inforu.co.il/SendMessageXml.ashx?InforuXML=`;
         const xml = generateSmsXml();
