@@ -78,7 +78,8 @@ export class InforUNode implements INodeType {
         const isSuccessfulResponse = res.data.includes(`<Status>1</Status>`);
 
         if (!isSuccessfulResponse) {
-            throw new Error(`Failed to send SMS. Response Body: ${res.data}`);
+            const errorMessage = `Failed to send SMS. Response Body: ${res.data}`;
+            throw new NodeApiError(this.getNode(), { error: errorMessage });
         }
 
         return [
